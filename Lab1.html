@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>LAB 1</title>
+		<style>
+		
+			table, th, td {	border: 1px solid black;
+							border-collapse: collapse;}
+		</style>
+	</head>
+	<body>
+		<h1> LAB 1: DOM manipulation with JavaScript </h1>
+		<h2>Víctor Cárdenas <br> A00816350</h2>
+		<h2>Insert the name of a prodcut and it's price</h2>
+		<form>
+		  Name: <input type="text" id="txtName" /> <br/>
+		  Price: <input type="number" id="txtPrice" /><br/>
+		  <!-- <button id="thebtn" type="button">Add</button><br/> -->
+		  <input type="submit" value="Add">
+		</form>
+	  
+		<h2>Current products</h2>
+		<ul id="products">
+		  
+		</ul>
+		
+		<h3>Total</h3>
+		<span>$</span>
+		<span id="spanTotal">0</span>
+		
+	  
+		
+		<script>
+		  // var button = document.getElementById("thebtn");
+		  var theForm = document.querySelector("form");
+		  var txtPrice = document.getElementById("txtPrice")
+		  var txtName = document.getElementById("txtName")
+		  var products = document.getElementById("products")
+		  
+		  function successfulValidation(namePar, pricePar){
+			// Validate
+			namePar = namePar.trim();
+			if (namePar===""){
+			  return false;
+			}
+			
+			// this is reached only if the previous did not happened
+			if (pricePar==="" || pricePar < 1){
+			  return false;
+			}
+			
+			// we reach this line if name and price have valid values
+			return true;
+		  }
+		  
+		  theForm.onsubmit = (event) => {
+			event.preventDefault();
+	  
+			// button.addEventListener("click", function(){
+			// TODO Separate in functions
+			let name = txtName.value
+			let price = txtPrice.value
+			
+			// Validate
+			if (!successfulValidation(name, price)){
+			  // if validation failed
+			  alert("We need valid names and prices");
+			  return;
+			} 
+			
+			let namePart = document.createTextNode(name);
+			let nameSpan = document.createElement("span");
+			nameSpan.appendChild(namePart);
+			
+			let pricePart = document.createTextNode(price);
+			let priceSpan = document.createElement("span")
+			priceSpan.appendChild(pricePart);
+			
+			let separatorSpan = document.createElement("span")
+			separatorSpan.appendChild(document.createTextNode(": $"))
+			
+			let removeButtonSpan = document.createElement("span");
+			let removeButton = document.createElement("button");
+			removeButton.appendChild(document.createTextNode("click to delete"));
+			removeButtonSpan.appendChild(removeButton);
+			
+			let newLi = document.createElement("li");
+			newLi.appendChild(nameSpan);
+			newLi.appendChild(separatorSpan);
+			newLi.appendChild(priceSpan);
+			newLi.appendChild(removeButtonSpan);
+			products.appendChild(newLi);
+			
+			removeButton.addEventListener("click", (event) => {
+			  products.removeChild(newLi);
+			  // var btn = event.target;
+			  // var span = btn.parentElement;
+			  // var li = span.parentElement;
+			  // var ul = li.parentElement;
+			  // ul.removeChild(li);
+			  let spanTotal = document.getElementById("spanTotal");
+			  let total = spanTotal.innerText;
+			  let newTotal = parseInt(total) - parseInt(price);
+			  spanTotal.innerText = newTotal;
+			})
+			
+			let spanTotal = document.getElementById("spanTotal");
+			let total = spanTotal.innerText;
+			let newTotal = parseInt(total) + parseInt(price);
+			spanTotal.innerText = newTotal;
+			
+		  };
+		</script>
+	</body>
+</html>
